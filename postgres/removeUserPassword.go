@@ -5,11 +5,11 @@ import "regexp"
 func removeUserPassword(rawInput string) string {
 	byteInput := []byte(rawInput)
 
-	userRegex, err := regexp.Compile(`(user=).(\w)+.`)
+	userRegex, err := regexp.Compile(`(user=).(\S+)\s`)
 	if err != nil {
 		return ""
 	}
-	passwordRegex, err := regexp.Compile(`(password=).(\w)+.`)
+	passwordRegex, err := regexp.Compile(`(password=).(\S+)\s`)
 	if err != nil {
 		return ""
 	}
