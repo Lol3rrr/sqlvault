@@ -2,6 +2,7 @@ package sqlvault
 
 import (
 	"database/sql"
+	"sync"
 
 	"github.com/hashicorp/vault/api"
 )
@@ -15,6 +16,8 @@ type DB struct {
 
 	vaultClient *api.Client
 	credsPath   string
+
+	mux sync.Mutex
 }
 
 type driver interface {
