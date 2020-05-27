@@ -7,12 +7,12 @@ import (
 )
 
 // ObtainConnection creates a new connection if the old one expired, otherwise does nothing
-func (d *DB) ObtainConnection(tableName string) (*sql.DB, error) {
+func (d *DB) ObtainConnection() (*sql.DB, error) {
 	d.mux.Lock()
 	defer d.mux.Unlock()
 
-	if d.SQL != nil {
-		query := "SELECT * FROM " + tableName + " WHERE false;"
+	if d.SQL != nil || len(d.username) <= 0 {
+		query := "SELECT 1 FROM pg_roles WHERE rolname='" + d.username + "'"
 
 		timeout, cancel := context.WithTimeout(context.TODO(), 100*time.Millisecond)
 		defer cancel()

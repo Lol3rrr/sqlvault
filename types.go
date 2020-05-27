@@ -16,6 +16,8 @@ type DB struct {
 
 	vaultClient *api.Client
 	credsPath   string
+	username    string
+	password    string
 
 	mux sync.Mutex
 }
