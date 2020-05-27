@@ -12,7 +12,7 @@ func (d *DB) ObtainConnection(tableName string) (*sql.DB, error) {
 	defer d.mux.Unlock()
 
 	if d.SQL != nil {
-		query := "SELECT * FROM " + tableName + " WHERE 0;"
+		query := "SELECT * FROM " + tableName + " WHERE false;"
 
 		timeout, cancel := context.WithTimeout(context.TODO(), 100*time.Millisecond)
 		defer cancel()
