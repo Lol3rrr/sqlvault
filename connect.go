@@ -1,6 +1,10 @@
 package sqlvault
 
-import "database/sql"
+import (
+	"database/sql"
+
+	"github.com/sirupsen/logrus"
+)
 
 func (d *DB) connect() error {
 	username, password, err := d.loadCreds()
@@ -20,6 +24,11 @@ func (d *DB) connect() error {
 		return err
 	}
 
+	if d.SQL != nil {
+		if err := d.SQL.Close(); err != nil {
+			logrus.Errorf("Could not close previous Connection: 's' \n", err)
+		}
+	}
 	d.SQL = db
 
 	return nil
