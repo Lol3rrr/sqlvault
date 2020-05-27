@@ -1,12 +1,19 @@
 package sqlvault
 
-import "database/sql"
+import (
+	"context"
+	"database/sql"
+	"time"
+)
 
 // ObtainConnection creates a new connection if the old one expired, otherwise does nothing
-func (d *DB) ObtainConnection() (*sql.DB, error) {
-
+func (d *DB) ObtainConnection(tableName string) (*sql.DB, error) {
 	if d.SQL != nil {
-		if err := d.SQL.Ping(); err == nil {
+		query := "SELECT * FROM " + tableName + " WHERE 0;"
+
+		timeout, cancel := context.WithTimeout(context.TODO(), 100*time.Millisecond)
+		defer cancel()
+		if _, err := d.SQL.QueryContext(timeout, query); err == nil {
 			return d.SQL, nil
 		}
 	}
