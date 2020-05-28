@@ -2,9 +2,10 @@ package sqlvault
 
 import (
 	"database/sql"
-	"sync"
+	"time"
 
 	"github.com/hashicorp/vault/api"
+	"golang.org/x/sync/singleflight"
 )
 
 // DB represents a single Database instance
@@ -19,7 +20,8 @@ type DB struct {
 	username    string
 	password    string
 
-	mux sync.Mutex
+	lastConnect time.Time
+	flightGroup singleflight.Group
 }
 
 type driver interface {
