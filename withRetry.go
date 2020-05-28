@@ -15,14 +15,15 @@ func (d *DB) WithRetry(execFunc func(con *sql.DB) error) error {
 
 	for i := 0; i < 2; i++ {
 		err := execFunc(tmpCon)
-		if IsAuthError(err) {
-			if tmpCon, err = d.Connect(); err != nil {
-				return err
+		if err != nil {
+			if IsAuthError(err) {
+				if tmpCon, err = d.Connect(); err != nil {
+					return err
+				}
+
+				continue
 			}
 
-			continue
-		}
-		if err != nil {
 			return err
 		}
 
