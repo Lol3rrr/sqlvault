@@ -11,7 +11,7 @@ import (
 func (d *DB) Connect() (*sql.DB, error) {
 	// A new connection has been established in the last X seconds
 	// return that one
-	if !time.Now().After(d.lastConnect.Add(10 * time.Second)) {
+	if !time.Now().After(d.lastConnect.Add(d.Settings.NewUserThreshold)) {
 		return d.ObtainConnection()
 	}
 
@@ -22,9 +22,9 @@ func (d *DB) Connect() (*sql.DB, error) {
 			return nil, err
 		}
 
-		dataSource := d.driver.CreateConnectionString(d.dataSourceName, d.username, d.password)
+		dataSource := d.driver.CreateConnectionString(d.Settings.DataSourceName, d.username, d.password)
 
-		db, err := sql.Open(d.driverName, dataSource)
+		db, err := sql.Open(d.Settings.DriverName, dataSource)
 		if err != nil {
 			return nil, err
 		}

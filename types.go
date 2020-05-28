@@ -8,12 +8,24 @@ import (
 	"golang.org/x/sync/singleflight"
 )
 
+// Config contains all the Options that can be used to
+// configure the behaviour of this package
+type Config struct {
+	DriverName     string
+	DataSourceName string
+
+	VaultCredsPath string
+
+	// Defaults to 15 Seconds if not defined
+	NewUserThreshold time.Duration
+}
+
 // DB represents a single Database instance
 type DB struct {
-	SQL            *sql.DB
-	driver         driver
-	driverName     string
-	dataSourceName string
+	Settings Config
+
+	SQL    *sql.DB
+	driver driver
 
 	vaultClient *api.Client
 	credsPath   string
