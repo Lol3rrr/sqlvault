@@ -6,7 +6,7 @@ import (
 )
 
 func (db *DB) loadCreds() error {
-	data, err := db.vaultClient.Logical().Read(db.credsPath)
+	data, err := db.vaultClient.Logical().Read(db.Settings.VaultCredsPath)
 	if err != nil {
 		return err
 	}

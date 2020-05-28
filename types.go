@@ -28,7 +28,6 @@ type DB struct {
 	driver driver
 
 	vaultClient *api.Client
-	credsPath   string
 	username    string
 	password    string
 
