@@ -23,7 +23,7 @@ func Open(driverName, dataSourceName string, vClient *api.Client, dbCredsPath st
 		credsPath:   dbCredsPath,
 	}
 
-	result.connect()
+	result.Connect()
 
 	return result, nil
 }
