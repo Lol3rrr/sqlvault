@@ -10,7 +10,7 @@ func (db *DB) loadCreds() error {
 	if err != nil {
 		return err
 	}
-	if data.Data == nil {
+	if data == nil || data.Data == nil {
 		return errors.New("Data field was not set in response")
 	}
 
