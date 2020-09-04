@@ -9,7 +9,7 @@ import (
 
 // Open is used to create new DB connetion
 // dataSourceName contains all the Configuration for the Database, expect username and password
-func Open(config Config, vClient *api.Client) (*DB, error) {
+func Open(config Config, vClient *api.Client) (Session, error) {
 	dbDriver, found := drivers[config.DriverName]
 	if !found {
 		return nil, fmt.Errorf("Could not find driver: '%s'", config.DriverName)
@@ -19,7 +19,7 @@ func Open(config Config, vClient *api.Client) (*DB, error) {
 		config.NewUserThreshold = 15 * time.Second
 	}
 
-	result := &DB{
+	result := &db{
 		Settings:    config,
 		driver:      dbDriver,
 		vaultClient: vClient,

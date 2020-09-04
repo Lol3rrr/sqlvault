@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func (db *DB) loadCreds() error {
+func (db *db) loadCreds() error {
 	data, err := db.vaultClient.Logical().Read(db.Settings.VaultCredsPath)
 	if err != nil {
 		return err

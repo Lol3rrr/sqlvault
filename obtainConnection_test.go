@@ -10,19 +10,19 @@ import (
 func TestObtainConnection(t *testing.T) {
 	tables := []struct {
 		Name        string
-		InputDB     *DB
+		InputDB     *db
 		ResultError bool
 	}{
 		{
 			Name: "Valid Input",
-			InputDB: &DB{
+			InputDB: &db{
 				SQL: &sql.DB{},
 			},
 			ResultError: false,
 		},
 		{
 			Name: "Connection is not set",
-			InputDB: &DB{
+			InputDB: &db{
 				SQL: nil,
 			},
 			ResultError: true,

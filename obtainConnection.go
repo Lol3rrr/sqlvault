@@ -6,7 +6,7 @@ import (
 )
 
 // ObtainConnection creates a new connection if the old one expired, otherwise does nothing
-func (d *DB) ObtainConnection() (*sql.DB, error) {
+func (d *db) ObtainConnection() (*sql.DB, error) {
 	if d.SQL == nil {
 		return nil, errors.New("Has no connection")
 	}

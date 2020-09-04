@@ -5,7 +5,7 @@ import "database/sql"
 // WithRetry executes the given function and provides a connection
 // if the function returns an auth error, it automatically retries it
 // with a new connection
-func (d *DB) WithRetry(execFunc func(con *sql.DB) error) error {
+func (d *db) WithRetry(execFunc func(con *sql.DB) error) error {
 	tmpCon, err := d.ObtainConnection()
 	if err != nil {
 		if tmpCon, err = d.Connect(); err != nil {
@@ -27,7 +27,7 @@ func (d *DB) WithRetry(execFunc func(con *sql.DB) error) error {
 			return err
 		}
 
-		break
+		return nil
 	}
 
 	return nil

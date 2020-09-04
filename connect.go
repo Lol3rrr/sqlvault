@@ -8,7 +8,7 @@ import (
 )
 
 // Connect is used to create a new Connection
-func (d *DB) Connect() (*sql.DB, error) {
+func (d *db) Connect() (*sql.DB, error) {
 	// A new connection has been established in the last X seconds
 	// return that one
 	if !time.Now().After(d.lastConnect.Add(d.Settings.NewUserThreshold)) {

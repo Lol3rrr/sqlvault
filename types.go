@@ -20,8 +20,8 @@ type Config struct {
 	NewUserThreshold time.Duration
 }
 
-// DB represents a single Database instance
-type DB struct {
+// db represents a single Database instance
+type db struct {
 	Settings Config
 
 	SQL    *sql.DB
@@ -33,6 +33,13 @@ type DB struct {
 
 	lastConnect time.Time
 	flightGroup singleflight.Group
+}
+
+// Session is the actual interface exposed as the API
+type Session interface {
+	// WithRetry calls the given function with a valid DB-Connection and returns
+	// any actual error (no auth errors) that the function returns
+	WithRetry(func(con *sql.DB) error) error
 }
 
 type driver interface {
