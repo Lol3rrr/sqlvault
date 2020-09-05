@@ -1,7 +1,9 @@
 package sqlvault
 
 import (
+	"context"
 	"database/sql"
+	sqlDriver "database/sql/driver"
 	"time"
 
 	"github.com/hashicorp/vault/api"
@@ -35,13 +37,32 @@ type db struct {
 	flightGroup singleflight.Group
 }
 
+type driver interface {
+	CreateConnectionString(rawDataSource, username, password string) string
+}
+
 // Session is the actual interface exposed as the API
 type Session interface {
 	// WithRetry calls the given function with a valid DB-Connection and returns
 	// any actual error (no auth errors) that the function returns
-	WithRetry(func(con *sql.DB) error) error
+	WithRetry(func(con DB) error) error
 }
 
-type driver interface {
-	CreateConnectionString(rawDataSource, username, password string) string
+// DB is used as an abstraction for the sql.DB struct to allow for better testing
+type DB interface {
+	Begin() (*sql.Tx, error)
+	BeginTx(context.Context, *sql.TxOptions) (*sql.Tx, error)
+	Close() error
+	Conn(context.Context) (*sql.Conn, error)
+	Driver() sqlDriver.Driver
+	Exec(string, ...interface{}) (sql.Result, error)
+	ExecContext(context.Context, string, ...interface{}) (sql.Result, error)
+	Ping() error
+	PingContext(context.Context) error
+	Prepare(string) (*sql.Stmt, error)
+	PrepareContext(context.Context, string) (*sql.Stmt, error)
+	Query(string, ...interface{}) (*sql.Rows, error)
+	QueryContext(context.Context, string, ...interface{}) (*sql.Rows, error)
+	QueryRow(string, ...interface{}) *sql.Row
+	QueryRowContext(context.Context, string, ...interface{}) *sql.Row
 }

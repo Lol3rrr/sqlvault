@@ -1,11 +1,9 @@
 package sqlvault
 
-import "database/sql"
-
 // WithRetry executes the given function and provides a connection
 // if the function returns an auth error, it automatically retries it
 // with a new connection
-func (d *db) WithRetry(execFunc func(con *sql.DB) error) error {
+func (d *db) WithRetry(execFunc func(con DB) error) error {
 	tmpCon, err := d.ObtainConnection()
 	if err != nil {
 		if tmpCon, err = d.Connect(); err != nil {
