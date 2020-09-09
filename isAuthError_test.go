@@ -23,6 +23,11 @@ func TestIsAuthError(t *testing.T) {
 			InputError: errors.New("syntax error at or near"),
 			Result:     false,
 		},
+		{
+			Name:       "Password auth error",
+			InputError: errors.New("password authentication failed for user"),
+			Result:     true,
+		},
 	}
 
 	for _, table := range tables {

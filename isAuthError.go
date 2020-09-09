@@ -9,6 +9,9 @@ func IsAuthError(err error) bool {
 	if strings.Contains(err.Error(), "permission denied") {
 		return true
 	}
+	if strings.Contains(err.Error(), "password authentication failed") {
+		return true
+	}
 
 	return false
 }
