@@ -32,6 +32,8 @@ type db struct {
 	vaultClient *api.Client
 	username    string
 	password    string
+	duration    int
+	leased      time.Time
 
 	lastConnect time.Time
 	flightGroup singleflight.Group
@@ -43,9 +45,10 @@ type driver interface {
 
 // Session is the actual interface exposed as the API
 type Session interface {
-	// WithRetry calls the given function with a valid DB-Connection and returns
-	// any actual error (no auth errors) that the function returns
-	WithRetry(func(con DB) error) error
+	// GetConnection returns a valid connection to the database that can be used
+	// to make requests to said database.
+	// Returns an error if a valid connection could not be obtained
+	GetConnection() (*sql.DB, error)
 }
 
 // DB is used as an abstraction for the sql.DB struct to allow for better testing

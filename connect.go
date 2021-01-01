@@ -12,7 +12,7 @@ func (d *db) Connect() (*sql.DB, error) {
 	// A new connection has been established in the last X seconds
 	// return that one
 	if !time.Now().After(d.lastConnect.Add(d.Settings.NewUserThreshold)) {
-		return d.ObtainConnection()
+		return d.GetConnection()
 	}
 
 	// Execute the creation of a new connection only once

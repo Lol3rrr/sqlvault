@@ -3,6 +3,7 @@ package sqlvault
 import (
 	"errors"
 	"fmt"
+	"time"
 )
 
 func (db *db) loadCreds() error {
@@ -23,6 +24,8 @@ func (db *db) loadCreds() error {
 
 	db.username = user
 	db.password = password
+	db.duration = data.LeaseDuration
+	db.leased = time.Now()
 
 	return nil
 }

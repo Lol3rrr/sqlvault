@@ -23,6 +23,8 @@ func Open(config Config, vClient *api.Client) (Session, error) {
 		Settings:    config,
 		driver:      dbDriver,
 		vaultClient: vClient,
+		leased:      time.Now(),
+		duration:    0,
 	}
 
 	result.Connect()
